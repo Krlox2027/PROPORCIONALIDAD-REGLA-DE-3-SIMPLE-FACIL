@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proporcionalidad · Profesor Carlos Huancaya Matos</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef3f9;color:#172c45;font:18px/1.5 system-ui,sans-serif}header{background:#163b65;color:white;padding:24px max(20px,calc((100% - 800px)/2))}h1{font-size:clamp(28px,5vw,42px);margin:0}main{max-width:840px;margin:24px auto;padding:0 16px}article{background:white;padding:clamp(16px,4vw,34px);border-radius:18px;box-shadow:0 8px 30px #163b6515}h2{margin:0}progress{width:100%;accent-color:#08766c}label{display:block;font-weight:650;margin-top:14px}input,textarea,select,button{font:inherit;border-radius:8px;padding:8px 12px}input,textarea,select{border:1px solid #73859a;width:100%;background:white;color:inherit}textarea{min-height:100px;resize:vertical}button{background:#12665e;color:white;border:0;cursor:pointer}button.secondary{background:#e1eaf5;color:#163b65}button:disabled{opacity:.48;cursor:default}nav,.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}details{margin-top:12px;background:#edf6f4;padding:10px 14px;border-radius:8px}summary{cursor:pointer;font-weight:650}:focus-visible{outline:3px solid #ad4e00;outline-offset:3px}#status{min-height:1.5em;margin-top:10px;font-weight:650}.meta{color:#455d76;font-size:.9em}
+
+body{background:radial-gradient(ellipse at top right,#dbfff4,transparent 55%),#f0f3ff;font-family:"Atkinson Hyperlegible Next",system-ui,sans-serif}
+header{padding:0;background:linear-gradient(115deg,#262265,#48339a 60%,#265d87)}
+.hero{max-width:960px;margin:auto;padding:24px clamp(18px,5vw,44px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+h1{font-size:clamp(30px,6vw,54px);line-height:1.12;margin:4px 0 6px}
+.hero-graphic{display:flex;align-items:center;gap:8px;background:#fff3c7;color:#25205d;border-radius:20px;padding:12px 16px;font-size:clamp(19px,3vw,32px);font-weight:800;white-space:nowrap;transform:rotate(3deg)}
+main{max-width:960px;margin:20px auto}article{border-top:6px solid #7960e1;box-shadow:0 12px 34px #30286e18}
+progress{height:13px;accent-color:#137c72;margin:6px 0 12px}
+h2{font-size:clamp(23px,4vw,32px);color:#312873}
+.scenario{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:16px;margin:14px 0;padding:14px 18px;border-radius:16px;background:#eeeaff;border-left:5px solid #7960e1}
+.scenario p{margin:0;font-size:clamp(22px,3.5vw,29px);font-weight:650;line-height:1.35}
+.illustration{display:grid;place-items:center;width:70px;aspect-ratio:1;background:#fff7d8;border-radius:15px;font-size:39px}
+.answer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 16px;padding:10px 0;border-bottom:1px solid #dfe4f1}
+.answer label{flex:1 1 250px;margin:0;font-size:clamp(20px,2.8vw,24px);line-height:1.3}
+.answer input{width:min(100%,8ch);min-height:46px;text-align:center;font-size:22px;font-weight:700;border:2px solid #6556a8;background:#faf8ff}
+button{min-height:44px;background:#383084;font-weight:700}button.secondary{background:#eae5ff;color:#332779}
+.actions button{background:#12665e}#status:empty{display:none}
+@media(max-width:540px){.hero-graphic{display:none}.scenario{gap:10px;padding:12px}.illustration{width:46px;font-size:27px}.answer label{flex-basis:100%}}
+</style>
+<header><div class="hero"><div><div>Profesor Carlos Huancaya Matos · Matemática</div><h1>Proporcionalidad</h1><div>Regla de tres simple directa</div></div><div class="hero-graphic" aria-hidden="true">📐 <span>2 : 4 = 3 : 6</span></div></div></header>
+<main><article><div id="meta" class="meta"></div><progress id="progress" max="20" aria-label="Problemas completados"></progress><h2 id="title" tabindex="-1"></h2><div id="content"></div><nav aria-label="Navegación"><button id="prev" class="secondary">Anterior</button><button id="next">Siguiente</button><button id="reset" class="secondary">Nueva ronda</button></nav></article></main>
+<script>
+const problems = [
+["Para preparar 6 panqueques se usan 2 tazas de leche.", "6 panqueques", "2 tazas", 6, 2, [["¿Cuántas tazas se necesitan con 12 panqueques?", 12, "tazas"], ["¿Cuántas tazas se necesitan con 18 panqueques?", 18, "tazas"]]],
+["Una ciclista recorre 8 km en 2 horas a ritmo constante.", "2 horas", "8 km", 2, 8, [["¿Cuántos kilómetros se recorren con 4 horas?", 4, "km"], ["¿Cuántos kilómetros se recorren con 6 horas?", 6, "km"]]],
+["En la feria, 2 kg de manzanas cuestan S/ 6 al mismo precio por kilo.", "2 kg", "6 soles", 2, 6, [["¿Cuántos soles se pagan con 4 kg?", 4, "soles"], ["¿Cuántos soles se pagan con 6 kg?", 6, "soles"]]],
+["Una impresora imprime 12 fichas en 3 minutos a ritmo constante.", "3 minutos", "12 fichas", 3, 12, [["¿Cuántas fichas se imprimen con 6 minutos?", 6, "fichas"], ["¿Cuántas fichas se imprimen con 9 minutos?", 9, "fichas"]]],
+["Con 2 litros de pintura se cubren 6 m² aplicando la misma capa.", "2 litros", "6 m²", 2, 6, [["¿Cuántos metros cuadrados se cubren con 4 litros?", 4, "m²"], ["¿Cuántos metros cuadrados se cubren con 6 litros?", 6, "m²"]]],
+["En un mapa, 2 cm representan 10 km.", "2 cm", "10 km", 2, 10, [["¿Cuántos kilómetros se representan con 4 cm?", 4, "km"], ["¿Cuántos kilómetros se representan con 6 cm?", 6, "km"]]],
+["Un grifo llena 6 litros en 2 minutos a ritmo constante.", "2 minutos", "6 litros", 2, 6, [["¿Cuántos litros se llenan con 4 minutos?", 4, "litros"], ["¿Cuántos litros se llenan con 8 minutos?", 8, "litros"]]],
+["Para hacer 3 cortinas iguales se usan 6 metros de tela.", "3 cortinas", "6 metros", 3, 6, [["¿Cuántos metros se usan con 6 cortinas?", 6, "metros"], ["¿Cuántos metros se usan con 9 cortinas?", 9, "metros"]]],
+["Un minibús recorre 20 km con 2 litros de combustible.", "2 litros", "20 km", 2, 20, [["¿Cuántos kilómetros se recorren con 4 litros?", 4, "km"], ["¿Cuántos kilómetros se recorren con 6 litros?", 6, "km"]]],
+["Para llenar 2 bandejas iguales se necesitan 8 vasos de tierra.", "2 bandejas", "8 vasos", 2, 8, [["¿Cuántos vasos se necesitan con 4 bandejas?", 4, "vasos"], ["¿Cuántos vasos se necesitan con 6 bandejas?", 6, "vasos"]]],
+["Con 4 kg de naranjas se preparan 2 litros de jugo usando la misma receta.", "4 kg", "2 litros", 4, 2, [["¿Cuántos litros se preparan con 8 kg?", 8, "litros"], ["¿Cuántos litros se preparan con 12 kg?", 12, "litros"]]],
+["Un taller arma 10 cajas en 2 minutos a ritmo constante.", "2 minutos", "10 cajas", 2, 10, [["¿Cuántas cajas se arman con 4 minutos?", 4, "cajas"], ["¿Cuántas cajas se arman con 6 minutos?", 6, "cajas"]]],
+["Para hacer 2 pulseras iguales se usan 10 cuentas.", "2 pulseras", "10 cuentas", 2, 10, [["¿Cuántas cuentas se usan con 4 pulseras?", 4, "cuentas"], ["¿Cuántas cuentas se usan con 6 pulseras?", 6, "cuentas"]]],
+["Dos paquetes iguales contienen en total 20 hojas.", "2 paquetes", "20 hojas", 2, 20, [["¿Cuántas hojas hay con 4 paquetes?", 4, "hojas"], ["¿Cuántas hojas hay con 6 paquetes?", 6, "hojas"]]],
+["En la librería, 3 lapiceros iguales cuestan S/ 6.", "3 lapiceros", "6 soles", 3, 6, [["¿Cuántos soles se pagan con 6 lapiceros?", 6, "soles"], ["¿Cuántos soles se pagan con 9 lapiceros?", 9, "soles"]]],
+["Para llenar 3 jarras iguales se necesitan 6 litros de refresco.", "3 jarras", "6 litros", 3, 6, [["¿Cuántos litros se necesitan con 6 jarras?", 6, "litros"], ["¿Cuántos litros se necesitan con 9 jarras?", 9, "litros"]]],
+["Para envolver 2 regalos iguales se usan 4 metros de cinta.", "2 regalos", "4 metros", 2, 4, [["¿Cuántos metros se usan con 4 regalos?", 4, "metros"], ["¿Cuántos metros se usan con 8 regalos?", 8, "metros"]]],
+["En un museo, 2 entradas a la misma tarifa cuestan S/ 8.", "2 entradas", "8 soles", 2, 8, [["¿Cuántos soles se pagan con 4 entradas?", 4, "soles"], ["¿Cuántos soles se pagan con 6 entradas?", 6, "soles"]]],
+["En el mercado, 2 kg de arroz cuestan S/ 8 al mismo precio por kilo.", "2 kg", "8 soles", 2, 8, [["¿Cuántos soles se pagan con 4 kg?", 4, "soles"], ["¿Cuántos soles se pagan con 8 kg?", 8, "soles"]]],
+["Una máquina envasa 9 botellas en 3 minutos a ritmo constante.", "3 minutos", "9 botellas", 3, 9, [["¿Cuántas botellas se envasan con 6 minutos?", 6, "botellas"], ["¿Cuántas botellas se envasan con 9 minutos?", 9, "botellas"]]]
+].map(([body,left,right,a,b,items])=>({kind:"Proporcionalidad directa",body,items:items.map(([q,n,u,reverse])=>[q,n*(reverse?a:b)/(reverse?b:a),u]),key:items.map(([q,n,u,reverse],i)=>`${i+1}. ${reverse?right:left} corresponde a ${reverse?left:right}. x = (${n} × ${reverse?a:b}) ÷ ${reverse?b:a} = ${n*(reverse?a:b)/(reverse?b:a)} ${u}.`)}));
+const illustrations=["🥞","🚲","🍎","🖨️","🎨","🗺️","🚰","🧵","🚐","🌱","🍊","📦","📿","📄","🖊️","🥤","🎁","🎟️","🍚","🧴"];
+const storageKey="profesor-carlos-proporcionalidad-facil-v1";
+const el=id=>document.getElementById(id);
+function newRound(){
+  const order=problems.map((_,i)=>i);
+  for(let i=order.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [order[i],order[j]]=[order[j],order[i]];
+  }
+  return {order,index:0,answers:{}};
+}
+function load(){
+  try {
+    const s=JSON.parse(localStorage.getItem(storageKey));
+    if(s && s.order?.length===20 && new Set(s.order).size===20 &&
+      s.order.every(i=>Number.isInteger(i)&&i>=0&&i<20) &&
+      Number.isInteger(s.index)&&s.index>=0&&s.index<=20&&s.answers) {
+      return s;
+    }
+  } catch {}
+  return newRound();
+}
+let state=load();
+function save(){try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{}}
+function completed(){return Object.values(state.answers).filter(a=>a.done).length}
+function render(focus=false){
+  const position=state.index, end=position===20;
+  el("meta").textContent=`${completed()} de 20 completados`;
+  el("progress").value=completed();
+  el("prev").disabled=position===0;
+  el("next").hidden=end;
+  el("next").textContent=position===19?"Ver resumen":"Siguiente";
+  if(end){
+    el("title").textContent="Resumen de la ronda";
+    el("content").innerHTML=`<p>Completaste <strong>${completed()} de 20</strong> problemas.</p><label for="review">Volver a un problema</label><select id="review"><option value="">Selecciona un problema</option>${state.order.map((id,i)=>`<option value="${i}">Problema ${i+1} · ${state.answers[id]?.done?"Completado":"Pendiente"}</option>`).join("")}</select>`;
+    el("review").onchange=e=>{if(e.target.value!=="")go(Number(e.target.value));};
+  }else{
+    const id=state.order[position], p=problems[id];
+    const a=state.answers[id]??={values:[],done:false,feedback:""};
+    el("title").textContent=`Problema ${position+1} de 20`;
+    el("content").innerHTML=`<p class="meta">${p.kind}</p><div class="scenario"><span class="illustration" aria-hidden="true">${illustrations[id]}</span><p>${p.body}</p></div><form id="workform">
+    ${p.items.map(([q,v,u],i)=>`<div class="answer"><label for="r${i}">${q} (${u})</label><input id="r${i}" inputmode="numeric" autocomplete="off"></div>`).join("")}
+    <div class="actions"><button type="submit">Comprobar</button></div><div id="status" role="status"></div></form>
+    <details id="solution" hidden><summary>Ver solución paso a paso</summary>${p.key.map(k=>`<p>${k}</p>`).join("")}</details>`;
+    const fields=Array.from({length:p.items.length},(_,i)=>el("r"+i));
+    fields.forEach((f,i)=>f.value=a.values[i]??"");
+    function feedback(){
+      el("status").textContent=a.feedback;
+      el("solution").hidden=!a.done;
+      el("meta").textContent=`${completed()} de 20 completados`;
+      el("progress").value=completed();
+    }
+    el("workform").oninput=()=>{
+      a.values=fields.map(f=>f.value);
+      a.done=false;a.feedback="";el("solution").open=false;
+      feedback();save();
+    };
+    el("workform").onsubmit=e=>{
+      e.preventDefault();
+      a.values=fields.map(f=>f.value.trim());
+      const wrong=p.items.flatMap((item,i)=>{
+        const value=a.values[i].replace(",","."), n=Number(value);
+        return /^\d+(\.\d+)?$/.test(value)&&Math.abs(n-item[1])<1e-8?[]:[i+1];
+      });
+      a.done=false;
+      if(a.values.some(v=>!v))a.feedback="Completa las respuestas.";
+      else if(wrong.length)a.feedback=`Revisa ${wrong.length===1?"la respuesta":"las respuestas"} ${wrong.join(" y ")}.`;
+      else {a.done=true;a.feedback="Resultados correctos. Puedes comparar tus operaciones con la solución.";}
+      feedback();save();
+    };
+    feedback();
+  }
+  if(focus)el("title").focus();
+}
+function go(index){state.index=index;save();render(true);}
+el("prev").onclick=()=>go(state.index-1);
+el("next").onclick=()=>go(state.index+1);
+el("reset").onclick=()=>{if(confirm("¿Mezclar los problemas y borrar las respuestas de esta ronda?")){state=newRound();save();render(true);}};
+save();render();
+</script></html>
